@@ -1,0 +1,200 @@
+KXELONMARS | KXELONMARS-99 | Will Elon Musk visit Mars in his lifetime?
+KXNEWPOPE | KXNEWPOPE-70 | Who will the next Pope be?
+KXWARMING | KXWARMING-50 | Will the world pass 2 degrees Celsius over pre-industrial levels before 2050?
+KXMARSVRAIL | KXMARSVRAIL-50 | Will a human land on Mars before California starts high-speed rail?
+KXERUPTSUPER | KXERUPTSUPER-0 | Will a supervolcano erupt before 2050?
+KXCOLONIZEMARS | KXCOLONIZEMARS-50 | Will humans colonize Mars before 2050?
+KXPERSONPRESMAM | KXPERSONPRESMAM-45 | Will Zohran Mamdani become President of the United States before 2045?
+KXNEXTDNCCHAIR | KXNEXTDNCCHAIR-45 | Who will be the next DNC Chair?
+KXXISUCCESSOR | KXXISUCCESSOR-45JAN01 | Who will be named as Xi Jinping's successor?
+KXPERSONPRESFUENTES | KXPERSONPRESFUENTES-45 | Will Nick Fuentes become President of the United States before 2045?
+KXNEXTROMANIAPM | KXNEXTROMANIAPM-45JAN01 | Who will be the next new Prime Minister of Romania?
+KXNEXTISRAELPM | KXNEXTISRAELPM-45JAN01 | Who will succeed Netanyahu as Prime Minister of Israel?
+KXG7LEADEROUT | KXG7LEADEROUT-45JAN01 | Which G7 leader will leave next?
+KXNFLENDSTREAK | KXNFLENDSTREAK-40NYJ | New York J: To Break Playoff Drought
+KXRAMPBREX | KXRAMPBREX-40 | Will Ramp or Brex IPO first?
+KXOAIANTH | KXOAIANTH-40 | Will OpenAI or Anthropic IPO first?
+KXFUSION | KXFUSION | When will nuclear fusion be achieved?
+KXDEELRIP | KXDEELRIP-40 | Will Deel or Rippling IPO first?
+KXPGAFUTURE | KXPGAFUTURE-36MRUS | Miles Russell: Golf Majors before 2036
+KXPGAFUTURE | KXPGAFUTURE-36JKOI | Jackson Koivun: Golf Majors before 2036
+KXNEWROLEJP | KXNEWROLEJP-35DEC | Who will be the next CEO of JPMorgan Chase?
+KXNEWROLEGS | KXNEWROLEGS-35DEC | Who will be the next CEO of Goldman Sachs?
+KXPOPCHANGESTATE10 | KXPOPCHANGESTATE10-35 | Will any U.S. state experience a population decrease of at least 10% between 2025 and 2035?
+KXEARTHQUAKECALIFORNIA | KXEARTHQUAKECALIFORNIA-35 | Will there be an at least 8.0 magnitude earthquake in California before 2035?
+KXROBOTMARS | KXROBOTMARS-35 | Will a humanoid robot walk on Mars before a human does?
+KXPERFORMBONDSONG | KXPERFORMBONDSONG-35 | Next James Bond film: Artist performing the James Bond Theme
+KXJOHNNYDEPP | KXJOHNNYDEPP-35 | Next Pirates of the Caribbean film: Will Johnny Depp be cast?
+KXFDAVERVE102 | KXFDAVERVE102-VERV | Will the FDA approve VERVE-102?
+KXBRUVSEAT | KXBRUVSEAT-35 | Will Andrew Tate's party win a seat in the next UK election?
+KXAFRICALEADEROUT | KXAFRICALEADEROUT-35 | Which of these African leaders will leave office next?
+KXACTORSONNYCROCKETT | KXACTORSONNYCROCKETT-35 | Next Miami Vice film: Cast
+KXWCHOST | KXWCHOST-2038 | Who will host the 2038 World Soccer Cup?
+KXPRESPARTY | KXPRESPARTY-2032 | Which party will win the 2032 Presidential Election?
+KXSOCIALSECURITYDEPLETE | KXSOCIALSECURITYDEPLETE-33 | Will Social Security’s retirement trust fund be depleted?
+KXNEXTTRILLIONAIRE | KXNEXTTRILLIONAIRE-33 | Who will be the world's second trillionaire?
+KXFDATYPE1DIABETES | KXFDATYPE1DIABETES-33 | Will the FDA approve a cure for Type 1 diabetes before 2033?
+KXEUCLIMATE | EUCLIMATE | EU meets its 2030 climate goals?
+KXFDAAPPROVE | KXFDAAPPROVE-MDMA | Will the FDA approve MDMA for PTSD?
+KXINDIACLIMATE | INDIACLIMATE-30 | India meets its 2030 climate goals?
+KXNFLRETIRE | KXNFLRETIRE-MSTAFFORD9 | Matthew Stafford: Retirement
+KXNFLRETIRE | KXNFLRETIRE-MEVANS5 | Mike Evans: Retirement
+KXNFLRETIRE | KXNFLRETIRE-LJOHNSON65 | Lane Johnson: Retirement
+KXNFLRETIRE | KXNFLRETIRE-KCOUSINS8 | Kirk Cousins: Retirement
+KXNFLRETIRE | KXNFLRETIRE-JFLACCO16 | Joe Flacco: Retirement
+KXNFLRETIRE | KXNFLRETIRE-DHENRY22 | Derrick Henry: Retirement
+KXNFLRETIRE | KXNFLRETIRE-DADAMS17 | Davante Adams: Retirement
+KXGDPYEAR | KXGDPYEAR-30 | US real GDP growth in 2030?
+KXSBHOST | KXSBHOST-2031 | Who will host the 2031 Pro Football Championship?
+KXNEXTSPEAKER | KXNEXTSPEAKER-31 | Who will be the next new Speaker of the House?
+KXMOONMAN | KXMOONMAN-31 | Which country will be the next to send humans to the Moon?
+KXAGICO | KXAGICO-COMP | When will any company achieve AGI?
+KXUSCLIMATE | USCLIMATE | US meets its climate goals?
+KXTVSEASONRELEASETHELASTOFUS | KXTVSEASONRELEASETHELASTOFUS | The Last of Us S3: Release date
+KXPRIMEENGCONSUMPTION | KXPRIMEENGCONSUMPTION-30 | What will be the largest source of global primary energy consumption in 2030?
+KXACTORTOMCRUZ | KXACTORTOMCRUZ-30 | Tom Cruise cast in another film with Ana de Armas?
+KXMLBDEBUT | KXMLBDEBUT-EHOLLIDAY | Ethan Holliday: Debut Date
+KXINDIANAPOWELL | KXINDIANAPOWELL-30 | Next Indiana Jones film: Will Glenn Powell be cast?
+KXCITYCHAMPS | KXCITYCHAMPS-TEX30JUL01SDRCTRAS | Texas Sports: Championships before Jul 1, 2030
+KXCITYCHAMPS | KXCITYCHAMPS-PHI30JUL017EPF | Philadelphia Sports: Championships before Jul 1, 2030
+KXCITYCHAMPS | KXCITYCHAMPS-OH30JUL01CBBGRB | Ohio Sports: Championships before Jul 1, 2030
+KXCITYCHAMPS | KXCITYCHAMPS-NYC30JUL01KNGJYMRI | New York Sports: Championships before Jul 1, 2030
+KXCITYCHAMPS | KXCITYCHAMPS-MIN30JUL01TVTW | Minnesota Sports: Championships before Jul 1, 2030
+KXCITYCHAMPS | KXCITYCHAMPS-MIA30JUL01HDMP | Miami Sports: Championships before Jul 1, 2030
+KXCITYCHAMPS | KXCITYCHAMPS-LA30JUL01LCRCDAKD | Los Angeles Sports: Championships before Jul 1, 2030
+KXCITYCHAMPS | KXCITYCHAMPS-DEN30JUL01NBRA | Denver Sports: Championships before Jul 1, 2030
+KXCITYCHAMPS | KXCITYCHAMPS-CHI30JUL01BBCWB | Chicago Sports: Championships before Jul 1, 2030
+KXCITYCHAMPS | KXCITYCHAMPS-BOS30JUL01CPRB | Boston Sports: Championships before Jul 1, 2030
+KXCITYCHAMPS | KXCITYCHAMPS-BAY30JUL01W4GS | Bay Area Sports: Championships before Jul 1, 2030
+KXCANADACUP | KXCANADACUP-30 | Canadian Team to Win the Stanley Cup® Before the 2031 Season
+KXF1RETIRE | KXF1RETIRE-30VERSTAPPEN | Max Verstappen: Retirement
+KXGDPYEAR | KXGDPYEAR-29 | US real GDP growth in 2029?
+KXTIMEDECADE20S | KXTIMEDECADE20S-30 | Time's Person of the Decade
+KXEVSHARE | EVSHARE-30JAN | EV market share in 2030?
+KXCONGRESSPAYINCREASE | KXCONGRESSPAYINCREASE-30 | Will Congressional salaries increase?
+KXU3MAX | KXU3MAX-30 | How high will unemployment get before 2030?
+KXPERFORMROLEBRITNEY | KXPERFORMROLEBRITNEY | Britney Spears biopic: Actress cast as Britney Spears
+KXPERFORMROLE007 | KXPERFORMROLE007-VILLAIN | Next James Bond film: Actor cast as the villain
+KXPERFORMROLE007 | KXPERFORMROLE007-Q | Next James Bond film: Actor cast as Q
+KXPERFORMROLE007 | KXPERFORMROLE007-MONEYPENNY | Next James Bond film: Actress cast as Moneypenny
+KXPERFORMROLE007 | KXPERFORMROLE007-M | Next James Bond film: Actor cast as M
+KXPERFORMROLE007 | KXPERFORMROLE007-FELIX | Next James Bond film: Actor cast as Felix Leiter
+KXPERFORMROLE007 | KXPERFORMROLE007 | Next James Bond film: Actress cast as Bond girl
+KXYTUBESUBSISHOWSPEED | KXYTUBESUBSISHOWSPEED | When will IShowSpeed reach 100 million Youtube subscribers?
+KXUSTAKEOVER | KXUSTAKEOVER-30 | Will the US government take control of any AI company or project before 2030?
+KXUKCOALITION | KXUKCOALITION-30JAN01 | Next government of the United Kingdom?
+KXTVSEASONRELEASEACOURTOFTHORNSANDROSES | KXTVSEASONRELEASEACOURTOFTHORNSANDROSES | A Court Of Thorns and Roses: Released before 2030?
+KXTRAVISKELCEWEDDING | KXTRAVISKELCEWEDDING-30JAN01 | Taylor Swift and Travis Kelce: Wedding groomsmen
+KXTAYLORSWIFTWEDDING | KXTAYLORSWIFTWEDDING-30JAN01 | Taylor Swift and Travis Kelce: Wedding bridesmaids 
+KXTAIWANLVL4 | KXTAIWANLVL4 | Will the US issue a Level 4 travel advisory for Taiwan?
+KXSWIFTKELCEWEDDINGLOCATION | KXSWIFTKELCEWEDDINGLOCATION-30 | Taylor Swift and Travis Kelce: Wedding location
+KXSPORTSOWNERLBJ | KXSPORTSOWNERLBJ-30 | Will LeBron James be a majority owner of a men's Pro Basketball team before 2030?
+KXSPACEXMARS | KXSPACEXMARS-30 | Will SpaceX land anything successfully on Mars before 2030?
+KXSONICS | KXSONICS-30 | Portland Trailblazers bought and changed to Seattle SuperSonics?
+KXSHOWENDSIMPSONS | KXSHOWENDSIMPSONS-30 | Will there be an announcement that The Simpsons is ending?
+KXSHOWENDFAMILYGUY | KXSHOWENDFAMILYGUY-30 | Will there be an announcement that Family Guy is ending?
+KXPOLIOELIM | KXPOLIOELIM-30 | Will there be a year without polio before 2030?
+KXNEXTUKPM | KXNEXTUKPM-30 | Who will be the next Prime Minister of the UK?
+KXNETWORTHKAICENAT | KXNETWORTHKAICENAT-30 | Will Kai Cenat become a billionaire before 2030?
+KXNBATEAM | KXNBATEAM-30 | Will there be a new Pro Basketball team added before 2030?
+KXNBASEATTLE | KXNBASEATTLE-30 | Will a Seattle Pro Basketball team play a game before 2030?
+KXMOVIERELEASEDATE | KXMOVIERELEASEDATE-AUS | Austin Powers 4: Release Date
+KXMEDIARELEASEPRISONBREAK | KXMEDIARELEASEPRISONBREAK-30JAN01 | Prison Break: New season release date
+KXMARRIAGESTYLESKRAVITZ | KXMARRIAGESTYLESKRAVITZ-HSZK | Harry Styles and Zoë Kravitz: Marriage date
+KXLIPATURNERLOCATION | KXLIPATURNERLOCATION-30 | Where will Dua Lipa and Callum Turner’s wedding occur?
+KXJPMCEONEW | KXJPMCEONEW | Who will replace Jamie Dimon as JPMorgan CEO?
+KXIPOAIRTABLE | KXIPOAIRTABLE | When will Airtable officially announce an IPO?
+KXGTAPRICE | KXGTAPRICE | Grand Theft Auto VI: PS5 price
+KXGTA6SONGS | KXGTA6SONGS-30 | Grand Theft Auto VI: Songs on radio at launch
+KXFYREFESTPRICE | KXFYREFESTPRICE-30 | How much will a Fyre Festival 2 General Admission Ticket cost?
+KXEUREF | KXEUREF-30 | What countries will hold referenda on leaving the EU?
+KXEUEXITCOUNTRY | KXEUEXITCOUNTRY-30 | Which countries will vote to leave the EU before 2030?
+KXECCOMPACT | KXECCOMPACT-30 | Will the NPVIC reach 270 electoral votes?
+KXEARTHQUAKEJAPAN | KXEARTHQUAKEJAPAN-30 | 8.0 magnitude earthquake in Japan before 2030?
+KXDATACENTER | KXDATACENTER-30 | Will the US start the process of building a nuclear-powered data center on a military base before 2030?
+KXCO2LEVEL | KXCO2LEVEL-30 | How bad will CO2 atmospheric concentration get before 2030?
+KXCASECESSION | KXCASECESSION-30 | Will a ballot initiative on California secession qualify for a vote before 2030?
+KXBUSHBY | KXBUSHBY-30 | Will Karl Bushby Finish His World Walk to Hull Before 2030?
+KXBOND | KXBOND-30 | Next James Bond film: Actor cast as James Bond
+KXBLUESPACEX | KXBLUESPACEX-30 | Will Blue Origin land on the moon before SpaceX?
+KXARTISTCOLLABTHUGANDGUNNA | KXARTISTCOLLABTHUGANDGUNNA-30 | When will Young Thug and Gunna make a song together?
+KXARTISTCOLLABDRAKEKENDRICK | KXARTISTCOLLABDRAKEKENDRICK-30 | Will Drake and Kendrick Lamar make a song together before 2030?
+KXEUEXPANSION | EUEXPANSION | EU has a new member before 2030?
+KXEUEXIT | EUEXIT | EU loses a member before 2030?
+KXCHINAUSGDP | CHINAUSGDP | China overtakes USA’s economy by 2030?
+KXBEYONCEGENRE | BEYONCEGENRE-30 | What genre will Beyonce’s next album be?
+KXAMAZONFTC | AMAZONFTC-29DEC31 | Courts consider Amazon a monopoly?
+KX48ETAXCREDIT | KX48ETAXCREDIT-26MAY | Will the 48E commercial solar Investment Tax Credit be reinstated before December 31, 2029?
+KXAPPLEUS | APPLEUS | Courts consider Apple a monopoly?
+KXSTARSHIPMARS | STARSHIPMARS | Starship launches humans to Mars before 2030?
+KXNBARETIRE | KXNBARETIRE-SCURRY30 | Steph Curry: Retirement
+KXNBARETIRE | KXNBARETIRE-RWESTBROOK18 | Russell Westbrook: Retirement
+KXNBARETIRE | KXNBARETIRE-LJAMES23 | LeBron James: Retirement
+KXNBARETIRE | KXNBARETIRE-KLEONARD2 | Kawhi Leonard: Retirement
+KXNBARETIRE | KXNBARETIRE-KIRVING11 | Kyrie Irving: Retirement
+KXNBARETIRE | KXNBARETIRE-KDURANT7 | Kevin Durant: Retirement
+KXNBARETIRE | KXNBARETIRE-DGREEN23 | Draymond Green: Retirement
+KXMLBDEBUT | KXMLBDEBUT-SHERNANDEZ | Seth Hernandez: Debut Date
+KXMLBDEBUT | KXMLBDEBUT-LPENA | Luis Peña: Debut Date
+KXMLBDEBUT | KXMLBDEBUT-EWILLITS | Eli Willits: Debut Date
+KXMLBDEBUT | KXMLBDEBUT-EQUINTERO | Eduardo Quintero: Debut Date
+KXALBERTAREFYES | KXALBERTAREFYES-29 | Will Alberta vote to secede from Canada?
+KXUKPARTY | KXUKPARTY-29 | Which party will win the next UK general election?
+KXGDPSHAREMANU | KXGDPSHAREMANU-29 | Will Trump bring back manufacturing?
+KXFULLTERMSKPRES | KXFULLTERMSKPRES-29 | Will South Korean President Lee Jae-myung serve their full term?
+KXGOVTCUTS | KXGOVTCUTS-28 | How much government spending will Trump cut before his term ends?
+KXDEBTGROWTH | KXDEBTGROWTH-28DEC31 | Peak US National Debt Under Trump Administration
+KXGDPYEAR | KXGDPYEAR-28 | US real GDP growth in 2028?
+KXEOTRUMPTERM | KXEOTRUMPTERM-29JAN20 | How many executive orders will Trump sign in his second term?
+POWER | POWER-28 | 2028: Who will win the Presidency, House, and Senate?
+KXDSENATESEATS | KXDSENATESEATS-29 | Democratic Senate Seat Count (2028)
+CONTROLS | CONTROLS-2028 | 2028 Senate winner
+CONTROLH | CONTROLH-2028 | 2028 House winner
+KXGDPUSMAX | KXGDPUSMAX-28 | Will there be a Trump economic boom?
+KXGREENLANDPRICE | KXGREENLANDPRICE-29JAN21 | How much will the US acquire Greenland for?
+KXAMEND22 | KXAMEND22-29 | Will Trump be allowed to run for a 3rd term?
+KXUSAEXPANDTERRITORY | KXUSAEXPANDTERRITORY | Will the US acquire any new territory?
+KXTRUMPRESIGN | KXTRUMPRESIGN | Will Trump resign during his term?
+KXTRUMPPARDONS | KXTRUMPPARDONS-29JAN21 | Who will Trump pardon?
+KXSCOURT | KXSCOURT-29 | Who will be the next Supreme Court justice?
+KXPRESPERSON | KXPRESPERSON-28 | 2028 U.S. Presidential Election winner?
+KXPRESPARTY | KXPRESPARTY-2028 | 2028 Presidential Election winner? (Party)
+KXNEXTPRESSEC | KXNEXTPRESSEC-29JAN21 | Who will be Trump's next Press Secretary?
+KXMTRUSHMORE | KXMTRUSHMORE-29 | Will Trump add himself to Mt. Rushmore?
+KXGREENTERRITORY | KXGREENTERRITORY-29 | Will the US take control of any part of Greenland?
+KXCANTERRITORY | KXCANTERRITORY-29 | Will the US take control of any part of Canada?
+GOVPARTYDE | GOVPARTYDE-28 | Delaware governor winner? (2028)
+KXZELENSKYPUTIN | KXZELENSKYPUTIN-29 | Will Zelenskyy and Putin speak?
+KXWITHDRAW | KXWITHDRAW-29 | What will the U.S. withdraw from during the Trump Administration?
+KXVETOOVERRIDE | KXVETOOVERRIDE-29JAN20 | Will Congress override Trump's veto?
+KXUSAKIM | KXUSAKIM-29 | Will Kim Jong-Un visit the US during Trump's term?
+KXTRUMPSNL | KXTRUMPSNL-29 | Will Trump go on SNL during his second term?
+KXTRUMPREMOVE | KXTRUMPREMOVE | Will Trump be impeached and removed from office?
+KXTRUMPPARDONFAMILY | KXTRUMPPARDONFAMILY-29JAN20 | Will Trump pardon any members of his family?
+KXTRUMPAGCOUNT | KXTRUMPAGCOUNT-29 | How many Attorneys General will Trump have?
+KXTERMLIMITS | KXTERMLIMITS-29 | Will Trump impose term limits on Congress?
+KXTAFTHARTLEY | KXTAFTHARTLEY-29 | Will Trump invoke the Taft-Hartley Act during his presidency?
+KXSTATE51 | KXSTATE51-29 | What will be the 51st state in Trump's term?
+KXSTATE | KXSTATE-29 | Will Trump add a 51st state to the US?
+KXSCOTUSRESIGN | KXSCOTUSRESIGN-29 | Which Supreme Court justices will resign during Trump's term?
+KXSCOTUSPOWER | KXSCOTUSPOWER-29 | What will the Supreme Court look like at the end of Trump's term?
+KXSCOTUSCHANGE | KXSCOTUSCHANGE-29 | Will the size of the Supreme Court be changed during Trump's Presidency?
+KXSCOTUSCERT3RD | KXSCOTUSCERT3RD-29JAN | Will the Supreme Court hear a 3rd Amendment case before Trump's term ends?
+KXRECOGSOMALI | KXRECOGSOMALI-29 | Will Trump recognize Somaliland?
+KXRECOGROC | KXRECOGROC-29 | Will Trump recognize Taiwan?
+KXNEXTSTATE | KXNEXTSTATE-29 | Who will be Trump's next Secretary of State?
+KXNEXTODNI | KXNEXTODNI-29 | Who will be Trump's next Director of National Intelligence?
+KXNEXTLABORSEC | KXNEXTLABORSEC-29 | Who will be Trump's next Secretary of Labor?
+KXNEXTDEF | KXNEXTDEF-29 | Who will be Trump's next Secretary of Defense?
+KXNEXTAG | KXNEXTAG-29 | Who will be Trump's next Attorney General?
+KXNEWSCOTUSCONF | KXNEWSCOTUSCONF-29JAN20 | How many Supreme Court justices will the President confirm?
+KXNEWCITY | KXNEWCITY-29 | Will Trump approve a new city on federal land?
+KXMARTIAL | KXMARTIAL-29JAN20 | Will Trump impose martial law before his term ends?
+KXJAN6CASES | KXJAN6CASES | Will Trump be held liable for January 6th in any court?
+KXINSURRECTION | KXINSURRECTION-29 | Will Trump invoke the Insurrection Act?
+KXINDJUDICIARY | KXINDJUDICIARY-29 | Will the independence of the judiciary be weakened during Trump's term?
+KXIMPEACHCABINET | KXIMPEACHCABINET | Will a cabinet member be impeached?
+KXIMPEACH | KXIMPEACH-29 | Will President Trump be impeached during his term?
+KXHABEAS | KXHABEAS-29 | Will Trump suspend habeas corpus?
+KXH1B | KXH1B-29 | Will Trump expand the H1-B program?
+KXGREENLAND | KXGREENLAND-29 | Will Trump buy at least part of Greenland?
