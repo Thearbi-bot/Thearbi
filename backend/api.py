@@ -3,7 +3,7 @@ api.py — lightweight FastAPI server for the dashboard.
 Runs the scanner logic and serves results as JSON.
 
 Install: pip install fastapi uvicorn
-Run:     uvicorn api:app --reload --port 8000
+Run:     python -m uvicorn api:app --host 0.0.0.0 --port 8080
 """
 
 import json
@@ -21,7 +21,7 @@ app = FastAPI(title="Arb Scanner API")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://127.0.0.1:3000"],
+    allow_origins=["*"],
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -34,11 +34,11 @@ MIN_VOLUME     = 500
 STALE_TOL      = 0.015
 
 STATIC_PAIRS = [
-    {"label": "Republican Senate Control 2026",  "kalshi_ticker": "CONTROLS-2026-R",   "polymarket_slug": "will-the-republican-party-control-the-senate-after-the-2026-midterm-elections"},
-    {"label": "Democrat Senate Control 2026",    "kalshi_ticker": "CONTROLS-2026-D",   "polymarket_slug": "will-the-democratic-party-control-the-senate-after-the-2026-midterm-elections"},
-    {"label": "Republican House Control 2026",   "kalshi_ticker": "CONTROLH-2026-R",   "polymarket_slug": "will-the-republican-party-control-the-house-after-the-2026-midterm-elections"},
-    {"label": "Democrat House Control 2026",     "kalshi_ticker": "CONTROLH-2026-D",   "polymarket_slug": "will-the-democratic-party-control-the-house-after-the-2026-midterm-elections"},
-    {"label": "Trump Impeached by Sep 2026",     "kalshi_ticker": "KXIMPEACH-26-SEP01","polymarket_slug": "will-trump-be-impeached-by-december-31-2026"},
+    {"label": "Republican Senate Control 2026",  "kalshi_ticker": "CONTROLS-2026-R",    "polymarket_slug": "will-the-republican-party-control-the-senate-after-the-2026-midterm-elections"},
+    {"label": "Democrat Senate Control 2026",    "kalshi_ticker": "CONTROLS-2026-D",    "polymarket_slug": "will-the-democratic-party-control-the-senate-after-the-2026-midterm-elections"},
+    {"label": "Republican House Control 2026",   "kalshi_ticker": "CONTROLH-2026-R",    "polymarket_slug": "will-the-republican-party-control-the-house-after-the-2026-midterm-elections"},
+    {"label": "Democrat House Control 2026",     "kalshi_ticker": "CONTROLH-2026-D",    "polymarket_slug": "will-the-democratic-party-control-the-house-after-the-2026-midterm-elections"},
+    {"label": "Trump Impeached by Sep 2026",     "kalshi_ticker": "KXIMPEACH-26-SEP01", "polymarket_slug": "will-trump-be-impeached-by-december-31-2026"},
 ]
 
 
@@ -104,7 +104,7 @@ def get_wti_pairs():
             if match:
                 kalshi_mkts[(close, float(match.group(1)))] = {"ticker": m["ticker"], "price": float(price)}
 
-        r2    = http.get(f"{POLY_GAMMA}/events", params={"series_slug": "wti-daily-close-uo", "limit": 10, "active": "true", "closed": "false"}, timeout=8)
+        r2     = http.get(f"{POLY_GAMMA}/events", params={"series_slug": "wti-daily-close-uo", "limit": 10, "active": "true", "closed": "false"}, timeout=8)
         events = r2.json() if isinstance(r2.json(), list) else r2.json().get("data", [])
         poly_mkts = {}
         for ev in events:
@@ -147,14 +147,14 @@ def run_scan(pairs):
             direction = "BUY YES on Polymarket / BUY NO on Kalshi"
         net = gap - KALSHI_FEE - POLYMARKET_FEE
         results.append({
-            "label":        pair["label"],
-            "kalshi_price": round(k_price, 4),
-            "poly_price":   round(p_price, 4),
-            "gap":          round(gap, 4),
-            "net_profit":   round(net, 4),
-            "direction":    direction,
+            "label":          pair["label"],
+            "kalshi_price":   round(k_price, 4),
+            "poly_price":     round(p_price, 4),
+            "gap":            round(gap, 4),
+            "net_profit":     round(net, 4),
+            "direction":      direction,
             "is_opportunity": net >= 0.02,
-            "timestamp":    datetime.now(timezone.utc).isoformat(),
+            "timestamp":      datetime.now(timezone.utc).isoformat(),
         })
     results.sort(key=lambda x: x["net_profit"], reverse=True)
     return results
@@ -162,8 +162,8 @@ def run_scan(pairs):
 
 @app.get("/scan")
 def scan():
-    wti   = get_wti_pairs()
-    pairs = STATIC_PAIRS + wti
+    wti    = get_wti_pairs()
+    pairs  = STATIC_PAIRS + wti
     results = run_scan(pairs)
     return {
         "results":             results,
