@@ -20,7 +20,7 @@ interface ScanData {
   opportunities_found: number;
 }
 
-const API_URL = "http://localhost:8000";
+const API_URL = "https://thearbi-production.up.railway.app";
 
 function PriceBar({ value }: { value: number }) {
   const pct = Math.min(value * 100, 100);
@@ -206,10 +206,7 @@ export default function Dashboard() {
               ⚠ Cannot connect to scanner API
             </div>
             <div className="text-zinc-500 text-xs">
-              Make sure the backend is running:
-              <code className="ml-2 text-zinc-300 bg-zinc-800 px-2 py-0.5 rounded">
-                python -m uvicorn api:app --reload --port 8000
-              </code>
+              Backend may be starting up — try refreshing in 30 seconds.
             </div>
           </div>
         )}
