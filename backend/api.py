@@ -1,6 +1,7 @@
 """
 api.py — lightweight FastAPI server for the dashboard.
 Runs the scanner logic and serves results as JSON.
+Uses bestBid/bestAsk spread filter (not volume) for WTI pairs.
 
 Install: pip install fastapi uvicorn
 Run:     python -m uvicorn api:app --host 0.0.0.0 --port 8080
@@ -30,8 +31,8 @@ KALSHI_BASE    = "https://api.elections.kalshi.com/trade-api/v2"
 POLY_GAMMA     = "https://gamma-api.polymarket.com"
 KALSHI_FEE     = 0.01
 POLYMARKET_FEE = 0.02
-MIN_VOLUME     = 500
-STALE_TOL      = 0.015
+STALE_TOL      = 0.015   # filter prices within 1.5c of 50c default
+MAX_SPREAD     = 0.15    # filter markets with bid/ask spread > 15c (too illiquid)
 
 STATIC_PAIRS = [
     {"label": "Republican Senate Control 2026",  "kalshi_ticker": "CONTROLS-2026-R",    "polymarket_slug": "will-the-republican-party-control-the-senate-after-the-2026-midterm-elections"},
@@ -47,14 +48,24 @@ def _is_stale(price: float) -> bool:
 
 
 def _get_poly_price(mkt: dict):
-    volume = float(mkt.get("volume24hr") or mkt.get("volume") or 0)
-    if volume < MIN_VOLUME:
-        return None
+    """
+    Get price using bestBid/bestAsk midpoint.
+    Filters stale 50c defaults and markets with spreads too wide to trade.
+    """
     bid = mkt.get("bestBid")
     ask = mkt.get("bestAsk")
+
     if bid and ask and float(bid) > 0 and float(ask) > 0:
-        price = (float(bid) + float(ask)) / 2
+        bid_f  = float(bid)
+        ask_f  = float(ask)
+        spread = ask_f - bid_f
+
+        if spread > MAX_SPREAD:
+            return None
+
+        price = (bid_f + ask_f) / 2
         return None if _is_stale(price) else price
+
     prices = mkt.get("outcomePrices")
     if prices:
         if isinstance(prices, str):
@@ -62,6 +73,7 @@ def _get_poly_price(mkt: dict):
         if prices and float(prices[0]) > 0:
             price = float(prices[0])
             return None if _is_stale(price) else price
+
     return None
 
 
@@ -162,8 +174,8 @@ def run_scan(pairs):
 
 @app.get("/scan")
 def scan():
-    wti    = get_wti_pairs()
-    pairs  = STATIC_PAIRS + wti
+    wti     = get_wti_pairs()
+    pairs   = STATIC_PAIRS + wti
     results = run_scan(pairs)
     return {
         "results":             results,

@@ -2,7 +2,8 @@
 weekly_check.py
 
 Finds current WTI oil pairs between Kalshi and Polymarket.
-Uses Polymarket CLOB API for live prices.
+Uses bestBid/bestAsk midpoint for accurate prices.
+Filters stale 50c prices and wide spreads instead of volume.
 
 Run any morning:
     python weekly_check.py
@@ -26,9 +27,10 @@ log = logging.getLogger(__name__)
 
 KALSHI_BASE    = "https://api.elections.kalshi.com/trade-api/v2"
 POLY_GAMMA     = "https://gamma-api.polymarket.com"
-POLY_CLOB      = "https://clob.polymarket.com"
 KALSHI_FEE     = 0.01
 POLYMARKET_FEE = 0.02
+STALE_TOL      = 0.015   # filter prices within 1.5c of 50c
+MAX_SPREAD     = 0.15    # filter markets with bid/ask spread > 15c (too illiquid)
 
 
 def send_notification(title, message):
@@ -45,19 +47,44 @@ def send_notification(title, message):
         log.error(f"Notification error: {e}")
 
 
-def get_clob_price(yes_token):
-    """Get live price from Polymarket CLOB API."""
-    try:
-        resp = requests.get(
-            f"{POLY_CLOB}/last-trade-price",
-            params={"token_id": yes_token},
-            timeout=10,
-        )
-        data  = resp.json()
-        price = data.get("price")
-        return float(price) if price else None
-    except Exception:
-        return None
+def _is_stale(price):
+    return abs(price - 0.50) < STALE_TOL
+
+
+def _get_poly_price(mkt):
+    """
+    Get price using bestBid/bestAsk midpoint.
+    Filters stale prices and markets with spreads too wide to trade.
+    """
+    bid = mkt.get("bestBid")
+    ask = mkt.get("bestAsk")
+
+    if bid and ask and float(bid) > 0 and float(ask) > 0:
+        bid_f = float(bid)
+        ask_f = float(ask)
+        spread = ask_f - bid_f
+
+        # Skip if spread is too wide — market not liquid enough
+        if spread > MAX_SPREAD:
+            return None
+
+        price = (bid_f + ask_f) / 2
+        if _is_stale(price):
+            return None
+        return price
+
+    # Fallback to outcomePrices
+    prices = mkt.get("outcomePrices")
+    if prices:
+        if isinstance(prices, str):
+            prices = json.loads(prices)
+        if prices and float(prices[0]) > 0:
+            price = float(prices[0])
+            if _is_stale(price):
+                return None
+            return price
+
+    return None
 
 
 def get_kalshi_wti():
@@ -105,28 +132,22 @@ def get_polymarket_wti():
             continue
 
         for m in data2[0].get("markets", []):
-            token_ids = m.get("clobTokenIds")
-            if isinstance(token_ids, str):
-                token_ids = json.loads(token_ids)
-            if not token_ids:
+            price = _get_poly_price(m)
+            if price is None:
                 continue
-
-            yes_token   = token_ids[0]
-            live_price  = get_clob_price(yes_token)
-            if live_price is None or live_price <= 0:
-                continue
-
             match = re.search(r"above \$(\d+)", m.get("question", "").lower())
             if match:
                 threshold = float(match.group(1))
+                bid = float(m.get("bestBid") or 0)
+                ask = float(m.get("bestAsk") or 0)
                 markets[(end_date, threshold)] = {
-                    "slug":      m.get("slug"),
-                    "question":  m.get("question", ""),
-                    "price":     live_price,
-                    "yes_token": yes_token,
+                    "slug":     m.get("slug"),
+                    "question": m.get("question", ""),
+                    "price":    price,
+                    "spread":   round(ask - bid, 4),
                 }
 
-    log.info(f"  Polymarket: {len(markets)} WTI sub-markets (live CLOB prices)")
+    log.info(f"  Polymarket: {len(markets)} WTI markets with tight enough spreads")
     return markets
 
 
@@ -148,6 +169,7 @@ def find_pairs(kalshi, poly):
                 "polymarket_slug": p_mkt["slug"],
                 "kalshi_price":    k_mkt["price"],
                 "poly_price":      p_mkt["price"],
+                "spread":          p_mkt["spread"],
                 "gap":             gap,
                 "net":             net,
                 "direction":       direction,
@@ -157,20 +179,21 @@ def find_pairs(kalshi, poly):
 
 
 def run():
-    log.info("=== WTI Pair Finder (Live CLOB Prices) ===\n")
+    log.info("=== WTI Pair Finder ===")
+    log.info(f"Spread filter: max {MAX_SPREAD*100:.0f}c | Stale filter: ±{STALE_TOL*100:.1f}c from 50c\n")
 
     log.info("Fetching Kalshi WTI markets...")
     kalshi = get_kalshi_wti()
 
-    log.info("Fetching Polymarket WTI markets (live prices)...")
+    log.info("Fetching Polymarket WTI markets...")
     poly = get_polymarket_wti()
 
     log.info("Matching pairs...")
     pairs = find_pairs(kalshi, poly)
 
     if not pairs:
-        log.info("No WTI pairs found. Try again tomorrow.")
-        send_notification("WTI Check", "No active WTI pairs found.")
+        log.info("No WTI pairs with tight spreads found yet. Try again later.")
+        send_notification("WTI Check", "No liquid WTI pairs found yet.")
         return
 
     profitable = [p for p in pairs if p["net"] >= 0.02]
@@ -182,22 +205,11 @@ def run():
     for p in pairs:
         status = "*** PROFITABLE ***" if p["net"] >= 0.02 else "monitoring"
         print(f"\n[{status}]  {p['label']}")
-        print(f"  Kalshi: {p['kalshi_price']*100:.1f}c  |  Polymarket (live): {p['poly_price']*100:.1f}c")
+        print(f"  Kalshi: {p['kalshi_price']*100:.1f}c  |  Polymarket: {p['poly_price']*100:.1f}c  |  Spread: {p['spread']*100:.1f}c")
         print(f"  Gap: {p['gap']*100:.1f}%  |  Net: {p['net']*100:.1f}%")
         print(f"  Action: {p['direction']}")
 
     if profitable:
-        print("\n" + "="*65)
-        print("PASTE THESE INTO curated_scanner.py STATIC_PAIRS list:")
-        print("="*65)
-        for p in profitable:
-            print(f"""
-    {{
-        "label": "{p['label']}",
-        "kalshi_ticker": "{p['kalshi_ticker']}",
-        "polymarket_slug": "{p['polymarket_slug']}",
-    }},""")
-
         send_notification(
             f"WTI: {len(profitable)} profitable pair(s)!",
             "\n".join(f"{p['label']}: {p['net']*100:.1f}% net" for p in profitable[:5])
