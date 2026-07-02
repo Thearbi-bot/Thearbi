@@ -1,16 +1,17 @@
-import { auth } from '@clerk/nextjs/server'
+import { auth, currentUser } from '@clerk/nextjs/server'
 import { NextResponse } from 'next/server'
 import Stripe from 'stripe'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
 
 export async function POST() {
-  const { userId, user } = await auth()
+  const { userId } = await auth()
 
   if (!userId) {
     return NextResponse.json({ error: 'Not authenticated' }, { status: 401 })
   }
 
+  const user = await currentUser()
   const email = user?.emailAddresses?.[0]?.emailAddress
 
   const session = await stripe.checkout.sessions.create({
@@ -24,7 +25,7 @@ export async function POST() {
     ],
     customer_email: email,
     metadata: { userId },
-    success_url: `${process.env.NEXT_PUBLIC_APP_URL}/?subscribed=true`,
+    success_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard?subscribed=true`,
     cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/subscribe`,
   })
 
