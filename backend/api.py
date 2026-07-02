@@ -1,24 +1,23 @@
 """
-api.py — lightweight FastAPI server for the dashboard.
-Runs the scanner logic and serves results as JSON.
-Uses bestBid/bestAsk spread filter (not volume) for WTI pairs.
-
-Install: pip install fastapi uvicorn
-Run:     python -m uvicorn api:app --host 0.0.0.0 --port 8080
+api.py — FastAPI server for The Arbi dashboard.
+Handles scan results and Stripe webhook for subscription management.
 """
 
 import json
 import re
+import os
 import logging
 from datetime import datetime, timezone
-from fastapi import FastAPI
+from fastapi import FastAPI, Request, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 import requests as http
+import stripe
 
 logging.basicConfig(level=logging.INFO)
 log = logging.getLogger(__name__)
 
-app = FastAPI(title="Arb Scanner API")
+app = FastAPI(title="The Arbi API")
 
 app.add_middleware(
     CORSMiddleware,
@@ -31,8 +30,15 @@ KALSHI_BASE    = "https://api.elections.kalshi.com/trade-api/v2"
 POLY_GAMMA     = "https://gamma-api.polymarket.com"
 KALSHI_FEE     = 0.01
 POLYMARKET_FEE = 0.02
-STALE_TOL      = 0.015   # filter prices within 1.5c of 50c default
-MAX_SPREAD     = 0.15    # filter markets with bid/ask spread > 15c (too illiquid)
+STALE_TOL      = 0.015
+MAX_SPREAD     = 0.15
+
+# Stripe setup
+stripe.api_key = os.getenv("STRIPE_SECRET_KEY")
+WEBHOOK_SECRET = os.getenv("STRIPE_WEBHOOK_SECRET")
+
+# Clerk API for updating user metadata
+CLERK_SECRET_KEY = os.getenv("CLERK_SECRET_KEY")
 
 STATIC_PAIRS = [
     {"label": "Republican Senate Control 2026",  "kalshi_ticker": "CONTROLS-2026-R",    "polymarket_slug": "will-the-republican-party-control-the-senate-after-the-2026-midterm-elections"},
@@ -48,24 +54,15 @@ def _is_stale(price: float) -> bool:
 
 
 def _get_poly_price(mkt: dict):
-    """
-    Get price using bestBid/bestAsk midpoint.
-    Filters stale 50c defaults and markets with spreads too wide to trade.
-    """
     bid = mkt.get("bestBid")
     ask = mkt.get("bestAsk")
-
     if bid and ask and float(bid) > 0 and float(ask) > 0:
         bid_f  = float(bid)
         ask_f  = float(ask)
-        spread = ask_f - bid_f
-
-        if spread > MAX_SPREAD:
+        if ask_f - bid_f > MAX_SPREAD:
             return None
-
         price = (bid_f + ask_f) / 2
         return None if _is_stale(price) else price
-
     prices = mkt.get("outcomePrices")
     if prices:
         if isinstance(prices, str):
@@ -73,7 +70,6 @@ def _get_poly_price(mkt: dict):
         if prices and float(prices[0]) > 0:
             price = float(prices[0])
             return None if _is_stale(price) else price
-
     return None
 
 
@@ -172,6 +168,29 @@ def run_scan(pairs):
     return results
 
 
+def update_clerk_subscription(user_id: str, subscribed: bool):
+    """Update user's subscription status in Clerk metadata."""
+    if not CLERK_SECRET_KEY:
+        log.warning("CLERK_SECRET_KEY not set — skipping metadata update")
+        return
+    try:
+        resp = http.patch(
+            f"https://api.clerk.com/v1/users/{user_id}/metadata",
+            headers={
+                "Authorization": f"Bearer {CLERK_SECRET_KEY}",
+                "Content-Type": "application/json",
+            },
+            json={"unsafe_metadata": {"subscribed": subscribed}},
+            timeout=10,
+        )
+        if resp.status_code == 200:
+            log.info(f"Updated Clerk metadata for {user_id}: subscribed={subscribed}")
+        else:
+            log.error(f"Clerk metadata update failed: {resp.text}")
+    except Exception as e:
+        log.error(f"Clerk update error: {e}")
+
+
 @app.get("/scan")
 def scan():
     wti     = get_wti_pairs()
@@ -188,3 +207,42 @@ def scan():
 @app.get("/health")
 def health():
     return {"status": "ok"}
+
+
+@app.post("/webhook")
+async def stripe_webhook(request: Request):
+    payload    = await request.body()
+    sig_header = request.headers.get("stripe-signature")
+
+    if not WEBHOOK_SECRET:
+        raise HTTPException(status_code=500, detail="Webhook secret not configured")
+
+    try:
+        event = stripe.Webhook.construct_event(payload, sig_header, WEBHOOK_SECRET)
+    except stripe.SignatureVerificationError:
+        raise HTTPException(status_code=400, detail="Invalid signature")
+
+    event_type = event["type"]
+    log.info(f"Stripe webhook: {event_type}")
+
+    if event_type == "checkout.session.completed":
+        session = event["data"]["object"]
+        user_id = session.get("metadata", {}).get("userId")
+        if user_id:
+            update_clerk_subscription(user_id, True)
+            log.info(f"Subscription activated for user {user_id}")
+
+    elif event_type in ["customer.subscription.deleted"]:
+        # Get customer and find associated user
+        subscription = event["data"]["object"]
+        customer_id  = subscription.get("customer")
+        log.info(f"Subscription cancelled for customer {customer_id}")
+        # Note: we'd need to store userId->customerId mapping to revoke here
+        # For now, log it — can be enhanced later
+
+    elif event_type == "customer.subscription.updated":
+        subscription = event["data"]["object"]
+        status       = subscription.get("status")
+        log.info(f"Subscription updated: status={status}")
+
+    return JSONResponse({"status": "ok"})
