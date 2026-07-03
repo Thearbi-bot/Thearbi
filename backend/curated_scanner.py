@@ -3,7 +3,7 @@ curated_scanner.py
 
 Monitors manually curated election pairs PLUS automatically
 finds and monitors today's WTI oil pairs.
-Filters stale 50c prices and low volume markets.
+Sends phone notifications only when opportunities are new or change significantly.
 
 Run:
     python curated_scanner.py
@@ -34,8 +34,14 @@ KALSHI_FEE            = 0.01
 POLYMARKET_FEE        = 0.02
 MIN_PROFIT_THRESHOLD  = 0.02
 POLL_INTERVAL_SECONDS = 30
-STALE_PRICE_TOLERANCE = 0.015   # filter 48.5c-51.5c as stale defaults
-MIN_VOLUME            = 500     # minimum $500 volume on Polymarket market
+STALE_TOL             = 0.015
+MAX_SPREAD            = 0.15
+
+# Only re-notify if profit changes by more than this amount
+NOTIFY_CHANGE_THRESHOLD = 0.01  # 1%
+
+# Track last notified profit per pair label
+_last_notified: dict[str, float] = {}
 
 # =============================================================================
 # STATIC ELECTION PAIRS
@@ -70,43 +76,31 @@ STATIC_PAIRS = [
 
 
 def _is_stale(price):
-    return abs(price - 0.50) < STALE_PRICE_TOLERANCE
+    return abs(price - 0.50) < STALE_TOL
 
 
 def _get_poly_price(mkt):
-    """
-    Get best available price from a Polymarket market dict.
-    Returns None if price is stale or volume is too low.
-    """
-    # Volume check
-    volume = float(mkt.get("volume24hr") or mkt.get("volume") or 0)
-    if volume < MIN_VOLUME:
-        return None
-
     bid = mkt.get("bestBid")
     ask = mkt.get("bestAsk")
     if bid and ask and float(bid) > 0 and float(ask) > 0:
-        price = (float(bid) + float(ask)) / 2
-        if _is_stale(price):
+        bid_f  = float(bid)
+        ask_f  = float(ask)
+        if ask_f - bid_f > MAX_SPREAD:
             return None
-        return price
-
+        price = (bid_f + ask_f) / 2
+        return None if _is_stale(price) else price
     prices = mkt.get("outcomePrices")
     if prices:
         if isinstance(prices, str):
             prices = json.loads(prices)
         if prices and float(prices[0]) > 0:
             price = float(prices[0])
-            if _is_stale(price):
-                return None
-            return price
-
+            return None if _is_stale(price) else price
     return None
 
 
 def get_wti_pairs():
     pairs = []
-
     try:
         resp = requests.get(
             f"{KALSHI_BASE}/markets",
@@ -173,11 +167,22 @@ def get_wti_pairs():
                 "polymarket_slug": poly_markets[p_key]["slug"],
             })
 
-    log.info(f"  Auto-found {len(pairs)} WTI pairs with real prices and volume")
+    log.info(f"  Auto-found {len(pairs)} WTI pairs with real prices")
     return pairs
 
 
-def send_phone_notification(title, message):
+def should_notify(label: str, profit: float) -> bool:
+    """
+    Returns True only if this is a new opportunity or
+    the profit has changed significantly from last notification.
+    """
+    if label not in _last_notified:
+        return True
+    last = _last_notified[label]
+    return abs(profit - last) >= NOTIFY_CHANGE_THRESHOLD
+
+
+def send_phone_notification(title: str, message: str):
     user_key  = os.getenv("PUSHOVER_USER_KEY")
     api_token = os.getenv("PUSHOVER_API_TOKEN")
     if not user_key or not api_token:
@@ -248,7 +253,6 @@ def calculate_profit(kalshi_price, poly_price):
 
 def scan_once(all_pairs):
     log.info(f"Checking {len(all_pairs)} pair(s)...")
-    opportunities = []
 
     for pair in all_pairs:
         kalshi_data = fetch_kalshi_price(pair["kalshi_ticker"])
@@ -270,14 +274,6 @@ def scan_once(all_pairs):
         )
 
         if profit >= MIN_PROFIT_THRESHOLD:
-            opportunities.append({
-                "label":   pair["label"],
-                "kalshi":  k_price,
-                "poly":    p_price,
-                "gap":     gap,
-                "profit":  profit,
-                "action":  direction,
-            })
             log.warning(
                 f"\n  *** REAL OPPORTUNITY ***\n"
                 f"  {pair['label']}\n"
@@ -286,24 +282,37 @@ def scan_once(all_pairs):
                 f"  Net profit: {profit*100:.2f}% after fees\n"
                 f"  Action    : {direction}\n"
             )
-            send_phone_notification(
-                title="ARB OPPORTUNITY",
-                message=(
-                    f"{pair['label']}\n"
-                    f"Net: {profit*100:.1f}%\n"
-                    f"Kalshi: {k_price*100:.1f}c | Poly: {p_price*100:.1f}c\n"
-                    f"{direction}"
-                ),
-            )
 
-    return opportunities
+            if should_notify(pair["label"], profit):
+                last = _last_notified.get(pair["label"])
+                is_new = last is None
+                change_str = "" if is_new else f" (was {last*100:.1f}%)"
+                send_phone_notification(
+                    title="ARB OPPORTUNITY" + (" 🆕" if is_new else " 📈"),
+                    message=(
+                        f"{pair['label']}\n"
+                        f"Net: {profit*100:.1f}%{change_str}\n"
+                        f"Kalshi: {k_price*100:.1f}c | Poly: {p_price*100:.1f}c\n"
+                        f"{direction}"
+                    ),
+                )
+                _last_notified[pair["label"]] = profit
+            else:
+                log.info(f"  Skipping notification — profit unchanged from last alert ({_last_notified.get(pair['label'], 0)*100:.1f}%)")
+
+        else:
+            # Opportunity gone — clear it from tracking so next time it appears it notifies again
+            if pair["label"] in _last_notified:
+                log.info(f"  Opportunity closed for {pair['label']} — reset notification tracker")
+                del _last_notified[pair["label"]]
 
 
 def run_loop():
     log.info("=== Curated Pair Scanner Started ===")
     log.info(f"Static election pairs: {len(STATIC_PAIRS)}")
-    log.info(f"Min volume filter: ${MIN_VOLUME}")
-    log.info("WTI oil pairs: auto-detected, stale + low volume filtered")
+    log.info(f"Min profit threshold: {MIN_PROFIT_THRESHOLD*100:.0f}%")
+    log.info(f"Re-notify threshold: >{NOTIFY_CHANGE_THRESHOLD*100:.0f}% change")
+    log.info("WTI oil pairs: auto-detected, stale + wide-spread filtered")
     log.info(f"Scanning every {POLL_INTERVAL_SECONDS}s\n")
 
     while True:

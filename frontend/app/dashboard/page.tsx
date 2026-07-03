@@ -91,7 +91,7 @@ function DashboardContent() {
     const justSubscribed = searchParams.get("subscribed") === "true";
     if (justSubscribed) {
       setSubscribed(true);
-      user?.update({ unsafeMetadata: { subscribed: true } });
+      user?.update({ unsafeMetadata: { ...user.unsafeMetadata, subscribed: true } });
       return;
     }
     const hasSub = user?.unsafeMetadata?.subscribed === true;
@@ -136,7 +136,7 @@ function DashboardContent() {
             <div className="text-xs text-zinc-500 tracking-widest uppercase mb-0.5">Prediction Market Arbitrage</div>
             <h1 className="text-2xl font-black tracking-tight text-white">The Arbi</h1>
           </div>
-          <div className="flex items-center gap-6">
+          <div className="flex items-center gap-4">
             {data && (
               <>
                 <div className="text-center">
@@ -151,7 +151,16 @@ function DashboardContent() {
                 </div>
               </>
             )}
-            <button onClick={fetchData} className="text-xs text-zinc-400 hover:text-white border border-zinc-700 hover:border-zinc-500 px-3 py-1.5 rounded transition-colors">
+            <button
+              onClick={() => router.push('/settings')}
+              className="text-xs text-zinc-400 hover:text-white border border-zinc-700 hover:border-zinc-500 px-3 py-1.5 rounded transition-colors"
+            >
+              ⚙ Settings
+            </button>
+            <button
+              onClick={fetchData}
+              className="text-xs text-zinc-400 hover:text-white border border-zinc-700 hover:border-zinc-500 px-3 py-1.5 rounded transition-colors"
+            >
               ↻ Refresh
             </button>
           </div>
