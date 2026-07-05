@@ -1,11 +1,12 @@
 "use client";
 
-import { useUser } from "@clerk/nextjs";
+import { useUser, useClerk } from "@clerk/nextjs";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
 export default function SettingsPage() {
   const { user, isLoaded } = useUser();
+  const { signOut } = useClerk();
   const router = useRouter();
   const [pushoverKey, setPushoverKey] = useState("");
   const [saving, setSaving] = useState(false);
@@ -66,6 +67,11 @@ export default function SettingsPage() {
     }
   }
 
+  async function handleSignOut() {
+    await signOut();
+    router.push("/");
+  }
+
   if (!isLoaded) return null;
 
   return (
@@ -101,7 +107,7 @@ export default function SettingsPage() {
             <div className="font-bold text-zinc-300 mb-2">Setup instructions:</div>
             <ol className="space-y-1 list-decimal list-inside">
               <li>Download the <span className="text-white">Pushover</span> app on your phone (iOS or Android)</li>
-              <li>Create a free account at <span className="text-white">pushover.net</span></li>
+              <li>Create a free account at <span className="text-white">pushover.net</span> — one-time $5 purchase</li>
               <li>Copy your <span className="text-white">User Key</span> from the dashboard</li>
               <li>Paste it below and click Save</li>
             </ol>
@@ -142,14 +148,20 @@ export default function SettingsPage() {
         </div>
 
         {/* Account info */}
-        <div className="border border-zinc-800 rounded-xl p-6">
+        <div className="border border-zinc-800 rounded-xl p-6 mb-6">
           <div className="font-bold text-white mb-4">Account</div>
           <div className="text-sm text-zinc-500 mb-1">Email</div>
           <div className="text-sm text-white mb-4">{user?.emailAddresses?.[0]?.emailAddress}</div>
           <div className="text-sm text-zinc-500 mb-1">Subscription</div>
-          <div className="text-sm text-emerald-400">
+          <div className="text-sm text-emerald-400 mb-6">
             {user?.unsafeMetadata?.subscribed ? "✓ Active — Information Plan ($20/month)" : "No active subscription"}
           </div>
+          <button
+            onClick={handleSignOut}
+            className="px-4 py-2 bg-zinc-800 hover:bg-red-950 hover:border-red-800 text-zinc-400 hover:text-red-400 text-sm rounded-lg transition-colors border border-zinc-700"
+          >
+            Sign out
+          </button>
         </div>
       </div>
     </div>
