@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useUser } from "@clerk/nextjs";
 
 const TICKERS = [
   { label: "REP Senate 2026", val: "58¢" },
@@ -37,7 +38,18 @@ const RESULTS = [
 export default function LandingPage() {
   const heroRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
+  const { user, isLoaded } = useUser();
   const [activePairs, setActivePairs] = useState(DEMO_PAIRS);
+
+  const isSubscribed = user?.unsafeMetadata?.subscribed === true;
+
+  // Auto-redirect signed-in subscribed users to dashboard
+  useEffect(() => {
+    if (!isLoaded) return;
+    if (user && isSubscribed) {
+      router.push('/dashboard');
+    }
+  }, [isLoaded, user, isSubscribed, router]);
 
   useEffect(() => {
     const scene = heroRef.current;
@@ -73,7 +85,6 @@ export default function LandingPage() {
     return () => clearInterval(iv);
   }, []);
 
-  // Animate demo prices
   useEffect(() => {
     const iv = setInterval(() => {
       setActivePairs(prev => prev.map(p => ({
@@ -91,13 +102,35 @@ export default function LandingPage() {
       {/* Nav */}
       <nav style={{ borderBottom: '1px solid #27272a', padding: '16px 40px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', position: 'sticky', top: 0, background: 'rgba(9,9,11,0.9)', backdropFilter: 'blur(8px)', zIndex: 100 }}>
         <div style={{ fontWeight: 900, fontSize: '18px', letterSpacing: '-0.5px' }}>The Arbi</div>
-        <div style={{ display: 'flex', gap: '12px' }}>
-          <button onClick={() => router.push('/sign-in')} style={{ padding: '8px 16px', border: '1px solid #3f3f46', borderRadius: '8px', background: 'transparent', color: '#a1a1aa', cursor: 'pointer', fontSize: '13px' }}>
-            Sign in
-          </button>
-          <button onClick={() => router.push('/sign-up')} style={{ padding: '8px 16px', border: 'none', borderRadius: '8px', background: '#22c55e', color: '#000', cursor: 'pointer', fontSize: '13px', fontWeight: '700' }}>
-            Get started
-          </button>
+        <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+          {isLoaded && user ? (
+            <>
+              <span style={{ fontSize: '13px', color: '#a1a1aa' }}>
+                {user.emailAddresses?.[0]?.emailAddress}
+              </span>
+              <button
+                onClick={() => router.push(isSubscribed ? '/dashboard' : '/subscribe')}
+                style={{ padding: '8px 16px', border: 'none', borderRadius: '8px', background: '#22c55e', color: '#000', cursor: 'pointer', fontSize: '13px', fontWeight: '700' }}
+              >
+                {isSubscribed ? 'Dashboard →' : 'Subscribe →'}
+              </button>
+            </>
+          ) : (
+            <>
+              <button
+                onClick={() => router.push('/sign-in')}
+                style={{ padding: '8px 16px', border: '1px solid #3f3f46', borderRadius: '8px', background: 'transparent', color: '#a1a1aa', cursor: 'pointer', fontSize: '13px' }}
+              >
+                Sign in
+              </button>
+              <button
+                onClick={() => router.push('/sign-up')}
+                style={{ padding: '8px 16px', border: 'none', borderRadius: '8px', background: '#22c55e', color: '#000', cursor: 'pointer', fontSize: '13px', fontWeight: '700' }}
+              >
+                Get started
+              </button>
+            </>
+          )}
         </div>
       </nav>
 
@@ -113,10 +146,25 @@ export default function LandingPage() {
             The Arbi scans Kalshi and Polymarket every 30 seconds, finds pricing discrepancies, and alerts you instantly — so you can lock in guaranteed profit.
           </p>
           <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
-            <button onClick={() => router.push('/sign-up')} style={{ padding: '14px 32px', background: '#22c55e', color: '#000', border: 'none', borderRadius: '10px', fontSize: '15px', fontWeight: '800', cursor: 'pointer' }}>
-              Start for $20/month →
-            </button>
-            <button onClick={() => document.getElementById('demo')?.scrollIntoView({ behavior: 'smooth' })} style={{ padding: '14px 32px', background: 'transparent', color: '#a1a1aa', border: '1px solid #3f3f46', borderRadius: '10px', fontSize: '15px', cursor: 'pointer' }}>
+            {isLoaded && user ? (
+              <button
+                onClick={() => router.push(isSubscribed ? '/dashboard' : '/subscribe')}
+                style={{ padding: '14px 32px', background: '#22c55e', color: '#000', border: 'none', borderRadius: '10px', fontSize: '15px', fontWeight: '800', cursor: 'pointer' }}
+              >
+                {isSubscribed ? 'Go to Dashboard →' : 'Subscribe for $20/month →'}
+              </button>
+            ) : (
+              <button
+                onClick={() => router.push('/sign-up')}
+                style={{ padding: '14px 32px', background: '#22c55e', color: '#000', border: 'none', borderRadius: '10px', fontSize: '15px', fontWeight: '800', cursor: 'pointer' }}
+              >
+                Start for $20/month →
+              </button>
+            )}
+            <button
+              onClick={() => document.getElementById('demo')?.scrollIntoView({ behavior: 'smooth' })}
+              style={{ padding: '14px 32px', background: 'transparent', color: '#a1a1aa', border: '1px solid #3f3f46', borderRadius: '10px', fontSize: '15px', cursor: 'pointer' }}
+            >
               See how it works
             </button>
           </div>
@@ -141,7 +189,6 @@ export default function LandingPage() {
           <p style={{ color: '#71717a', fontSize: '15px' }}>Real scanner output — prices updating every 2 seconds</p>
         </div>
 
-        {/* Dashboard mockup */}
         <div style={{ border: '1px solid #27272a', borderRadius: '16px', overflow: 'hidden' }}>
           <div style={{ background: '#111113', borderBottom: '1px solid #27272a', padding: '16px 24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <div style={{ fontWeight: '900', fontSize: '16px' }}>The Arbi</div>
@@ -158,7 +205,6 @@ export default function LandingPage() {
           </div>
 
           <div style={{ padding: '24px', background: '#09090b' }}>
-            {/* Opportunity */}
             <div style={{ fontSize: '11px', color: '#4ade80', letterSpacing: '2px', marginBottom: '12px' }}>● LIVE OPPORTUNITIES</div>
             {activePairs.filter(p => p.opp).map((p, i) => (
               <div key={i} style={{ border: '1px solid rgba(74,222,128,0.3)', borderRadius: '10px', padding: '16px 20px', marginBottom: '8px', background: 'rgba(74,222,128,0.04)' }}>
@@ -187,7 +233,6 @@ export default function LandingPage() {
               </div>
             ))}
 
-            {/* Monitoring */}
             <div style={{ fontSize: '11px', color: '#52525b', letterSpacing: '2px', margin: '16px 0 12px' }}>MONITORING</div>
             {activePairs.filter(p => !p.opp).map((p, i) => (
               <div key={i} style={{ border: '1px solid #27272a', borderRadius: '10px', padding: '14px 20px', marginBottom: '8px', background: '#111113' }}>
@@ -276,8 +321,11 @@ export default function LandingPage() {
               <span style={{ color: '#4ade80', fontWeight: '700' }}>✓</span> {f}
             </div>
           ))}
-          <button onClick={() => router.push('/sign-up')} style={{ marginTop: '24px', width: '100%', padding: '14px', background: '#22c55e', color: '#000', border: 'none', borderRadius: '10px', fontSize: '15px', fontWeight: '800', cursor: 'pointer' }}>
-            Get started →
+          <button
+            onClick={() => router.push(user ? (isSubscribed ? '/dashboard' : '/subscribe') : '/sign-up')}
+            style={{ marginTop: '24px', width: '100%', padding: '14px', background: '#22c55e', color: '#000', border: 'none', borderRadius: '10px', fontSize: '15px', fontWeight: '800', cursor: 'pointer' }}
+          >
+            {user ? (isSubscribed ? 'Go to Dashboard →' : 'Subscribe Now →') : 'Get started →'}
           </button>
         </div>
       </div>
